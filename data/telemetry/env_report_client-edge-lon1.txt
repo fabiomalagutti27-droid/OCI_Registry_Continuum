@@ -1,0 +1,68 @@
+=======================================================================
+📊 REPORT SCIENTIFICO AMBIENTALE: CLIENT-EDGE-LON1
+Data di estrazione: Fri Jul 10 22:08:01 UTC 2026
+=======================================================================
+
+-----------------------------------------------------------------------
+🌍 1. TOPOLOGIA GEOGRAFICA & CLOUD PROVIDER METADATA
+-----------------------------------------------------------------------
+[Provider]: DigitalOcean Inc.
+[Public IPv4]: 138.68.154.204
+[Data Center Region]: lon1
+
+-----------------------------------------------------------------------
+🧠 2. CARATTERIZZAZIONE HARDWARE (CPU, RAM, DISCO)
+-----------------------------------------------------------------------
+Architecture:                            x86_64
+CPU(s):                                  1
+Model name:                              DO-Regular
+BIOS Model name:                         pc-i440fx-6.1  CPU @ 2.0GHz
+Core(s) per socket:                      1
+Socket(s):                               1
+NUMA node0 CPU(s):                       0
+
+[Memoria RAM Disponibile]:
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       388Mi       238Mi       4.1Mi       1.5Gi       1.5Gi
+Swap:             0B          0B          0B
+
+[Sottosistema di Storage - File System di Root]:
+Type/Filesystem: ext4 | Dimensioni Totali: 48G | Disponibile: 45G
+
+[Dettagli Dispositivo a Blocchi]:
+NAME    FSTYPE   SIZE TYPE MOUNTPOINTS
+vda               50G disk 
+├─vda1  ext4      49G part /
+├─vda14            4M part 
+├─vda15 vfat     106M part /boot/efi
+└─vda16 ext4     913M part /boot
+vdb     iso9660  488K disk 
+
+-----------------------------------------------------------------------
+⚙️ 3. CONFIGURAZIONE KERNEL LINUX & PARAMETRI TCP L4
+-----------------------------------------------------------------------
+[Informazioni di Sistema]: Linux client-edge-lon1 6.8.0-124-generic #124-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 13:00:45 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+[Algoritmo di Controllo Congestione TCP]:
+net.ipv4.tcp_congestion_control = cubic
+
+[Configurazione dei Buffer di Allocazione TCP (Min, Default, Max)]:
+net.core.rmem_max = 212992
+net.core.wmem_max = 212992
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_wmem = 4096	16384	4194304
+
+[Massimo Numero di File Descriptor Allocabili (ulimit -n)]:
+ulimit -n: 1024
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+🐋 4. VERSIONI RUNTIME MIDDLEWARE & VERIFICA STANDARD OCI
+-----------------------------------------------------------------------
+[Docker Engine Server Version]: 29.1.3
+
+[Harbor Enterprise Middleware]: Non presente su questo nodo (Comportamento atteso su Edge/Client).
+
+[Verifica Autenticazione OCI API v2]:
+ -> Local Registry non attivo su porta 5000 o bloccato.
+-----------------------------------------------------------------------

@@ -1,0 +1,22 @@
+🔄 Preparazione dell'ambiente di test (Pull immagine base)...
+---------------------------------------------------
+⚖️ TEST MODELLO CP (Consistenza Forte / Synchronous)
+Il sistema attende l'ACK di scrittura sia dal Core che dall'Edge.
+Equazione della latenza: L = Baseline + RTT_Geografico
+---------------------------------------------------
+
+real	0m0.100s
+user	0m0.008s
+sys	0m0.014s
+
+---------------------------------------------------
+⚡ TEST MODELLO AP (Consistenza Eventuale / BASE)
+Il sistema attende l'ACK solo dal nodo Core. La replica sarà asincrona.
+Equazione della latenza: L = Baseline
+---------------------------------------------------
+
+real	0m0.071s
+user	0m0.011s
+sys	0m0.008s
+
+✅ Simulazione completata.

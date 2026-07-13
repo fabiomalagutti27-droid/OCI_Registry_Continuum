@@ -1,0 +1,17 @@
+system,type,metric_name,mean,std,count
+harbor,payload,checks,1.0,0.0,23234
+harbor,payload,data_received,3854976.486786606,561.7489869613576,23234
+harbor,payload,data_sent,23136.537402083155,214.96293034183964,23234
+harbor,payload,http_req_blocked,0.47499541161659636,14.372720499490462,46468
+harbor,payload,http_req_connecting,0.33423563734182665,13.228479827930943,46468
+harbor,payload,http_req_duration,101.1509743242016,111.63589781259033,46468
+harbor,payload,http_req_failed,0.0,0.0,46468
+harbor,payload,http_req_receiving,43.645831040845316,78.30329561455811,46468
+harbor,payload,http_req_sending,0.49967039048377376,22.72845655482095,46468
+harbor,payload,http_req_tls_handshaking,0.13140534826116898,3.062125540362561,46468
+harbor,payload,http_req_waiting,57.00547289287251,67.91419772562386,46468
+harbor,payload,http_reqs,1.0,0.0,46468
+harbor,payload,iteration_duration,1206.4361818198329,201.8998995931554,23234
+harbor,payload,iterations,1.0,0.0,23234
+harbor,payload,vus,38.87222222222222,23.488470951845592,720
+harbor,payload,vus_max,100.0,0.0,720

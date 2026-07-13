@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Overall Performance Summary of Harbor vs. Registry:2 (Stateless vs. Stateful)}
+\label{tab:performance_summary}
+\begin{tabular}{l l r r r r r}
+\toprule
+\textbf{Configuration} & \textbf{Test Type} & \textbf{Mean Latency (ms)} & \textbf{p95 Latency (ms)} & \textbf{p99 Latency (ms)} & \textbf{Max Throughput (MB/s)} & \textbf{Success Rate (\%)} \\
+\midrule
+Registry:2 (Local SSD) & Metadata & 22.080000 & 38.390000 & 66.200000 & - & 100.0\% \\
+Harbor (S3 Spaces) & Metadata & 80.560000 & 133.010000 & 160.840000 & - & 100.0\% \\
+Registry:2 (Local SSD) & Payload & 176.800000 & 508.080000 & 824.870000 & 36.69 & 100.0\% \\
+Harbor (S3 Spaces) & Payload & 101.150000 & 143.040000 & 239.470000 & 36.8 & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}

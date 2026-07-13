@@ -1,0 +1,17 @@
+system,type,metric_name,mean,std,count
+registryA,payload,checks,1.0,0.0,23795
+registryA,payload,data_received,3846870.0,0.0,23795
+registryA,payload,data_sent,223.0,0.0,23795
+registryA,payload,http_req_blocked,0.21655631758772853,2.704920472644056,23795
+registryA,payload,http_req_connecting,0.20102631674721583,2.6705490802910146,23795
+registryA,payload,http_req_duration,176.802492511494,156.70353531517964,23795
+registryA,payload,http_req_failed,0.0,0.0,23795
+registryA,payload,http_req_receiving,145.28121047072915,146.90651453539317,23795
+registryA,payload,http_req_sending,0.06832335915108216,2.456824795801925,23795
+registryA,payload,http_req_tls_handshaking,0.0,0.0,23795
+registryA,payload,http_req_waiting,31.452958681613783,26.519967040781463,23795
+registryA,payload,http_reqs,1.0,0.0,23795
+registryA,payload,iteration_duration,1178.2933969994956,157.6793519783341,23795
+registryA,payload,iterations,1.0,0.0,23795
+registryA,payload,vus,38.88194444444444,23.51825749738237,720
+registryA,payload,vus_max,100.0,0.0,720

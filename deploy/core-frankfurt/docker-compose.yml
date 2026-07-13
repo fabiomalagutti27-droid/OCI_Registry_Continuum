@@ -1,0 +1,70 @@
+##############################################################################
+# File: docker-compose.yml
+# Author: Fabio Malagutti
+# Student ID: 0001247400
+# Course: Infrastructures for Cloud Computing and Big Data M
+# Academic Year: 2025/2026
+# File Scope: Core registry orchestration, port binding, and reverse proxy topology.
+# Data Integrity: Student ID explicitly standardized for academic traceability.
+##############################################################################
+# @file: docker-compose.yml
+# @node: Core Server (Frankfurt)
+# @component: Registry A / Registry B / Reverse Proxy Orchestrator
+# @objective: Validate the separation between stateless and stateful data
+#             planes while preserving SLA, QoS, and observability of the I/O
+#             bottleneck.
+##############################################################################
+services:
+  # Registry 1: Standard registry (Port 5000)
+  registry-standard:
+    image: registry:2
+    container_name: registry-standard
+    restart: always
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+    volumes:
+      - registry-std-data:/var/lib/registry
+    networks:
+      - registry-net
+
+  # Registry 2: Harbor (Port 5001)
+  registry-harbor:
+    image: goharbor/registry-photon:v2.10.0
+    container_name: registry-harbor
+    restart: always
+    # These S3 variables override the default config.yml to enforce the S3
+    # backend and support Data Plane Offloading via HTTP 307 redirect behavior.
+    ports:
+      - "5001:5000" # [PORT BINDING] Host 5001 -> container 5000 to isolate the Harbor registry.
+    environment:
+      REGISTRY_STORAGE: s3
+      REGISTRY_STORAGE_S3_REGION: fra1
+      REGISTRY_STORAGE_S3_BUCKET: ${S3_BUCKET:?set S3_BUCKET}
+      REGISTRY_STORAGE_S3_ACCESSKEY: ${S3_ACCESS_KEY:?set S3_ACCESS_KEY}
+      REGISTRY_STORAGE_S3_SECRETKEY: ${S3_SECRET_KEY:?set S3_SECRET_KEY}
+      REGISTRY_STORAGE_S3_REGIONENDPOINT: https://fra1.digitaloceanspaces.com
+    volumes:
+      - ./config.yml:/etc/registry/config.yml:ro
+    networks:
+      - registry-net
+  # ==========================================
+  # REVERSE PROXY
+  # ==========================================
+  proxy:
+    image: nginx:alpine
+    container_name: proxy
+    restart: always
+    ports:
+      - "5000:5000" # [PUBLIC ENDPOINT] Registry A exposed on the stateless data plane.
+      - "8080:8080" # [PUBLIC ENDPOINT] Harbor exposed on the stateful data plane.
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - registry-net
+networks:
+  registry-net:
+    driver: bridge
+
+volumes:
+  registry-std-data:
+  registry-harbor-data:

@@ -1,0 +1,54 @@
+# =========================================================
+# Operating System Artifacts
+# =========================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================================================
+# Editor / IDE Metadata
+# =========================================================
+.vscode/
+.idea/
+
+# =========================================================
+# Python / Jupyter Temporary Files
+# =========================================================
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# =========================================================
+# Python Environments and Local Secrets
+# =========================================================
+.env
+.env.*
+.venv/
+venv/
+env/
+ENV/
+
+# =========================================================
+# Logs and Runtime Noise
+# =========================================================
+*.log
+*.tmp
+*.temp
+
+# =========================================================
+# Repository-Specific Notes
+# =========================================================
+# Do not ignore benchmark data, telemetry, processed tables, figures,
+# or the compiled academic report. These are required for submission.
+#
+# Explicitly kept under version control:
+# - data/**/*.csv
+# - data/**/*.txt
+# - figures/**/*.png
+# - figures/**/*.jpg
+# - OCI_Registry_Continuum_Report.pdf

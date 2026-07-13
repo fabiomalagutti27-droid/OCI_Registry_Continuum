@@ -1,0 +1,5 @@
+Configuration,Test Type,Mean Latency (ms),p95 Latency (ms),p99 Latency (ms),Max Throughput (MB/s),Success Rate (%)
+Registry:2 (Local SSD),Metadata,22.08,38.39,66.2,-,100.0%
+Harbor (S3 Spaces),Metadata,80.56,133.01,160.84,-,100.0%
+Registry:2 (Local SSD),Payload,176.8,508.08,824.87,36.69,100.0%
+Harbor (S3 Spaces),Payload,101.15,143.04,239.47,36.8,100.0%

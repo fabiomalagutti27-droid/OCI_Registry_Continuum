@@ -1,0 +1,25 @@
+##############################################################################
+# File: config.yml
+# Author: Fabio Malagutti
+# Student ID: 0001247400
+# Course: Infrastructures for Cloud Computing and Big Data M
+# Academic Year: 2025/2026
+# File Scope: Harbor registry storage backend configuration for the S3 path.
+# Data Integrity: Student ID explicitly standardized for academic traceability.
+##############################################################################
+# @file: config.yml
+# @node: Core Server (Frankfurt)
+# @component: Harbor Registry Storage Backend
+# @objective: Bind the Harbor backend to S3 storage to evaluate consistency
+#             overhead and the QoS of the stateful data plane.
+##############################################################################
+version: 0.1
+log:
+  level: info
+storage:
+  s3:
+    region: fra1
+    bucket: fabio-harbor-storage
+    regionendpoint: https://fra1.digitaloceanspaces.com
+http:
+  addr: :5000
