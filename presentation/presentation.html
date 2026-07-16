@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCI Image Registry Continuum - Thesis Defense</title>
+<style>
+    /* 
+    ==========================================================================
+    OCI IMAGE REGISTRY CONTINUUM - STANDARDIZED ARCHITECTURAL STYLESHEET
+    Standard: Academic Typography / Uniform Split-Layout / Chrome Print-Safe
+    Palette: Elegant Charcoal & Black
+    ==========================================================================
+    */
+
+    :root {
+        --charcoal-black: #111111;
+        --deep-gray: #1a1a1a;
+        --text-body: #333333;
+        --slate-meta: #4a5568;
+        --light-accent: #f5f5f5;
+        --border-subtle: #dddddd;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --line-height: 1.6;
+    }
+
+    /* 1. GLOBAL RESET & BASE */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--font-main);
+        background-color: #ffffff;
+        color: var(--text-body);
+        overflow: hidden; /* Prevents unwanted scrolling on screen */
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* 2. SLIDE CONTAINER LOGIC */
+    #presentation-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 60px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease-in-out;
+        z-index: 1;
+        background: #ffffff;
+    }
+
+    .slide.active {
+        opacity: 1;
+        visibility: visible;
+        z-index: 10;
+    }
+
+    /* 3. TYPOGRAPHY DISCIPLINE */
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        justify-content: flex-start;
+    }
+
+    .slide-title {
+        font-size: 2.2em;
+        font-weight: 700;
+        color: var(--charcoal-black);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--charcoal-black);
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+    }
+
+    ul {
+        list-style-type: square;
+        padding-left: 1.5rem;
+    }
+
+    li {
+        font-size: 1.15em;
+        line-height: var(--line-height);
+        margin-bottom: 12px;
+        color: var(--text-body);
+    }
+
+    li strong {
+        color: var(--charcoal-black);
+        font-weight: 700;
+    }
+
+    /* Nested list styling */
+    ul ul {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    ul ul li {
+        font-size: 0.95em;
+        margin-bottom: 6px;
+    }
+
+    /* 4. STRICT SPLIT LAYOUT (55/40/5) */
+    .split-layout {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center; /* Vertical center alignment for balance */
+        width: 100%;
+        height: 100%;
+        gap: 5%; /* Built-in gap */
+        flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .left-col {
+        flex: 0 0 55%;
+        max-width: 55%;
+        padding-right: 30px;
+        box-sizing: border-box;
+    }
+
+    .right-col {
+        flex: 0 0 40%;
+        max-width: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    /* 5. RESPONSIVE & BOUNDED IMAGES */
+    .right-col img {
+        max-width: 100%;
+        max-height: 42vh; /* Protects against text squeezing */
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 4px;
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        background-color: #ffffff;
+    }
+
+    .figure-caption {
+        margin-top: 12px;
+        font-size: 0.85em;
+        color: var(--slate-meta);
+        font-style: italic;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* 6. FORMULAS & SPECIAL ACCENTS */
+    .formula-box, .math-formula {
+        font-family: "Cambria Math", "Times New Roman", serif;
+        background-color: var(--light-accent);
+        padding: 15px;
+        border-left: 4px solid var(--charcoal-black);
+        margin: 15px 0;
+        font-size: 1.25em;
+        text-align: center;
+        color: var(--charcoal-black);
+    }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid var(--border-subtle);
+        font-size: 0.95em;
+        text-align: left;
+    }
+
+    th {
+        background-color: var(--light-accent);
+        color: var(--charcoal-black);
+        font-weight: 700;
+    }
+
+    /* 7. TITLE SLIDE SPECIFIC STYLES */
+    .title-slide {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title-container {
+        max-width: 900px;
+        border: 2px solid var(--charcoal-black);
+        padding: 60px;
+        background: #ffffff;
+    }
+
+    .main-title {
+        font-size: 2.8em;
+        color: var(--charcoal-black);
+        margin-bottom: 20px;
+        line-height: 1.1;
+    }
+
+    .highlight {
+        color: var(--slate-meta);
+        font-weight: 300;
+    }
+
+/* 8. INTERACTIVE UI (Hidden during print) */
+    #slide-counter {
+        position: fixed;
+        bottom: 25px;
+        right: 35px;
+        font-size: 1.15em;
+        font-weight: 800;
+        color: #000000;
+        background: #ffffff;
+        padding: 6px 14px;
+        border: 2px solid #000000;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+    }
+
+    /* 9. ROBUST CHROME PRINT STYLESHEET */
+    @media print {
+        @page {
+            size: landscape;
+            margin: 0;
+        }
+
+        body {
+            overflow: visible !important;
+            background: white !important;
+        }
+
+        #slide-counter, .navigation-buttons, .progress-bar {
+            display: none !important;
+        }
+
+        #presentation-container {
+            display: block !important;
+            height: auto !important;
+            width: auto !important;
+        }
+
+        .slide {
+            position: relative !important;
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            transform: none !important;
+            transition: none !important;
+            background: white !important;
+            border: none !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Ensure images and text colors print correctly */
+        .slide-title {
+            color: black !important;
+            border-bottom-color: black !important;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .left-col li strong, .formula-box {
+            color: black !important;
+            -webkit-print-color-adjust: exact;
+        }
+    }
+ 
+</style>
+</head>
+<body>
+
+    <div id="presentation-container">
+
+<!-- Slide 1: Title Slide -->
+        <div class="slide active" id="slide-1">
+            <div class="content-container" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; box-sizing: border-box; padding: 50px 60px; text-align: center;">
+                
+                <!-- Intestazione Accademica (In alto) -->
+                <div class="header-section" style="margin-bottom: auto;">
+                    <div class="unibo-header" style="font-size: 1.25em; font-weight: bold; letter-spacing: 1px; color: #002f6c; margin-bottom: 5px; text-transform: uppercase;">Alma Mater Studiorum • Università di Bologna</div>
+                    <div class="disi-subheader" style="font-size: 0.95em; color: #555; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Dipartimento di Informatica – Scienza e Ingegneria (DISI)</div>
+                </div>
+                
+                <!-- Blocco Titolo Principale (Centrato verticalmente) -->
+                <div class="title-main-block" style="margin-top: auto; margin-bottom: auto; padding: 30px 0;">
+                    <h1 class="main-title" style="font-size: 2.85em; line-height: 1.25; margin-bottom: 20px; font-weight: 800; color: #111; letter-spacing: -0.5px;">
+                        OCI Image Registry Continuum:<br>
+                        <span class="highlight" style="color: #002f6c; background: linear-gradient(120deg, rgba(0,47,108,0.08) 0%, rgba(0,47,108,0.03) 100%); padding: 4px 12px; border-radius: 6px; display: inline-block; margin-top: 10px;">
+                            Performance Characterization & Resource Overhead
+                        </span>
+                    </h1>
+                    <p class="course-title" style="font-size: 1.35em; font-style: italic; color: #555; margin-top: 15px; font-weight: 500;">
+                        Infrastructures for Cloud Computing and Big Data M
+                    </p>
+                </div>
+                
+                <!-- Metadati e Relatori (In basso, allineati e separati da una linea elegante) -->
+                <div class="footer-meta" style="margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #ddd; padding-top: 25px; font-size: 0.95em; color: #333; line-height: 1.5;">
+                    <div class="meta-item" style="text-align: left; flex: 1;">
+                        <span style="color: #666; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Candidate</span>
+                        <strong>Fabio Malagutti</strong><br>Student ID: 0001247400
+                    </div>
+                    <div class="meta-item" style="text-align: center; flex: 1.2;">
+                        <span style="color: #666; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Advisors</span>
+                        <strong>Prof. Antonio Corradi</strong><br><strong>Prof. Andrea Sabbioni</strong>
+                    </div>
+                    <div class="meta-item" style="text-align: right; flex: 1;">
+                        <span style="color: #666; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Academic Year</span>
+                        <strong>2025/2026</strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+      <!-- Slide 2: The Cloud-to-Edge Continuum -->
+        <div class="slide" id="slide-2" style="box-sizing: border-box; padding: 40px 60px; width: 100%; height: 100%; position: relative;">
+            <div class="content-container" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; box-sizing: border-box;">
+                
+                <!-- Titolo della Slide -->
+                <h2 class="slide-title" >
+                    The Cloud-to-Edge Continuum & OCI Image Registries
+                </h2>
+                
+                <!-- Layout a colonne blindato -->
+                <div class="split-layout" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; flex-grow: 1; box-sizing: border-box; gap: 5%;">
+                    
+                    <!-- COLONNA SINISTRA: Testo Accademico (Bloccato al 50%) -->
+                    <div class="left-col" style="flex: 0 0 50%; max-width: 50%; box-sizing: border-box; padding-right: 20px;">
+                        <ul style="font-size: 1.15em; line-height: 1.6; color: #333; margin: 0; padding-left: 20px;">
+                            <li style="margin-bottom: 15px;">
+                                <strong>Modern Deployment Paradigms:</strong> Shift from static, environment-dependent configuration to packed, immutable containerized shipping (Docker, Kubernetes).
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <strong>The Role of Registries:</strong> Container image registries have evolved from passive, out-of-line storage bins into critical, runtime-active middleware components.
+                            </li>
+                            <li style="margin-bottom: 0;">
+                                <strong>The Geodistributed Bottleneck:</strong> Multi-region orchestration introduces severe performance challenges, governed by physical network propagation delays (RTT), Bandwidth-Delay Product (BDP) limits, and transactional consensus barriers (CAP).
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- COLONNA DESTRA: Visualizzazione Grafico (Bloccato al 45%) -->
+                    <div class="right-col" style="flex: 0 0 45%; max-width: 45%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                        <figure class="figure-container" style="margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; align-items: center;">
+                            <img src="figures/fig_arch_harbor_stateful.png" 
+                                 alt="Registry Architecture Diagram" 
+                                 onerror="this.src='https://placehold.co/800x500/f8f9fa/4a5568?text=fig_arch_harbor_stateful.png\n(Local+Image+Placeholder)'"
+                                 style="max-width: 100%; max-height: 45vh; width: auto; height: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #ddd;">
+                            <figcaption class="figure-caption" style="font-size: 0.85em; color: #555; margin-top: 12px; font-style: italic; line-height: 1.4; max-width: 95%;">
+                                Fig. 1: Control vs. Data Plane decoupling in geodistributed OCI Registry topologies.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Architectural Trade-offs -->
+        <div class="slide" id="slide-3">
+            <div class="content-container">
+                <h2 class="slide-title">Architectural Trade-offs: Transactional ACID vs. Elastic BASE</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Stateless Registry (ACID-oriented):</strong> Direct, POSIX-compliant writes to local block storage (Registry:2 on Local SSD). Prioritizes immediate strong consistency, transactional safety, and low single-user latency, but remains highly vulnerable to "data gravity" bottlenecks under high concurrent access.</li>
+                            <li><strong>Stateful Registry (BASE-oriented):</strong> Complex microservice ecosystem (Harbor on S3 Spaces) coupling a relational control plane (PostgreSQL/Redis) with decoupled cloud object storage. Embraces eventual consistency and L7 redirects to enable horizontal, geographical elasticity.</li>
+                            <li><strong>The Core Question:</strong> How does L7 Control Plane complexity (Statefulness) impact runtime performance and resource efficiency when compared to physical, Layer 4 transport-layer constraints?</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <table style="border-collapse: collapse; width: 100%; font-size: 1.05rem; color: var(--text-main); background-color: var(--white); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); border-radius: 8px; overflow: hidden;">
+                            <thead>
+                                <tr>
+                                    <th style="border-top: 2px solid var(--slate-gray); border-bottom: 1px solid var(--slate-gray); padding: 1rem; text-align: left; font-weight: 600;">Metric / Property</th>
+                                    <th style="border-top: 2px solid var(--slate-gray); border-bottom: 1px solid var(--slate-gray); padding: 1rem; text-align: left; font-weight: 600; color: var(--primary-blue);">ACID (Registry:2)</th>
+                                    <th style="border-top: 2px solid var(--slate-gray); border-bottom: 1px solid var(--slate-gray); padding: 1rem; text-align: left; font-weight: 600; color: var(--primary-blue);">BASE (Harbor)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15); font-weight: 500;">Consistency Model</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Strong (Immediate POSIX)</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Eventual (Replication Lag)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15); font-weight: 500;">Persistence Layer</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Local SSD (Block)</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">S3 Spaces (Object)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15); font-weight: 500;">Scaling Strategy</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Vertical (Host Bound)</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Horizontal (Cloud Elastic)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15); font-weight: 500;">Concurrency Path</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Pessimistic (Locks/Queues)</td>
+                                    <td style="padding: 1rem; border-bottom: 1px solid rgba(74, 85, 104, 0.15);">Optimistic (L7 Offloading)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; border-bottom: 2px solid var(--slate-gray); font-weight: 500;">Coordination Tax (T<sub>0</sub>)</td>
+                                    <td style="padding: 1rem; border-bottom: 2px solid var(--slate-gray);">Minimal (T<sub>0</sub> &approx; 0)</td>
+                                    <td style="padding: 1rem; border-bottom: 2px solid var(--slate-gray);">High Static &amp; Dynamic Tax</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Experimental Setup & Geodistributed Testbed -->
+        <div class="slide split-layout" id="slide-4">
+            <style>
+                /* Scoped CSS specifically for Slide 4's Schematic - Compacted to fit */
+                #slide-4 .left-col ul li { margin-bottom: 0.8rem; font-size: 1.05rem; line-height: 1.5; }
+                #slide-4 .left-col ul ul { margin-top: 0.4rem; margin-bottom: 0; list-style-type: circle; }
+                #slide-4 .left-col ul ul li { margin-bottom: 0.3rem; font-size: 0.95rem; }
+                
+                #slide-4 .schematic-wrapper {
+                    background: var(--white);
+                    border: 1px solid rgba(74, 85, 104, 0.15);
+                    border-radius: 12px;
+                    padding: 1.5rem 1rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    max-width: 500px;
+                    margin: 0 auto;
+                }
+                #slide-4 .nodes-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: stretch;
+                    width: 100%;
+                    margin-bottom: 0;
+                }
+                #slide-4 .node-box {
+                    background: var(--bg-color);
+                    border: 2px solid var(--primary-blue);
+                    border-radius: 8px;
+                    padding: 0.8rem;
+                    width: 160px;
+                    text-align: center;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                    flex-shrink: 0;
+                    z-index: 3;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                #slide-4 .node-title {
+                    font-weight: 700;
+                    color: var(--primary-blue);
+                    margin-bottom: 0.3rem;
+                    font-size: 0.9rem;
+                }
+                #slide-4 .node-details {
+                    font-size: 0.75rem;
+                    color: var(--slate-gray);
+                    line-height: 1.3;
+                }
+                #slide-4 .link-wrapper {
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                    padding: 0 5px;
+                    min-width: 80px;
+                }
+                #slide-4 .link-line {
+                    width: 100%;
+                    border-top: 2px dashed var(--slate-gray);
+                    position: absolute;
+                    z-index: 1;
+                }
+                #slide-4 .link-badge {
+                    background: var(--primary-blue);
+                    color: var(--white);
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 20px;
+                    font-size: 0.7rem;
+                    font-weight: 600;
+                    z-index: 2;
+                    position: relative;
+                    white-space: nowrap;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                #slide-4 .s3-section {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    width: 100%;
+                }
+                #slide-4 .vertical-connection {
+                    width: 160px; /* Same width as node-box to align perfectly under Frankfurt */
+                    height: 35px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                }
+                #slide-4 .vertical-line {
+                    height: 100%;
+                    border-left: 2px dotted var(--slate-gray);
+                    position: absolute;
+                    z-index: 1;
+                }
+                #slide-4 .vertical-badge {
+                    background: var(--white);
+                    color: var(--slate-gray);
+                    padding: 0.1rem 0.4rem;
+                    font-size: 0.65rem;
+                    font-style: italic;
+                    z-index: 2;
+                    position: relative;
+                    border: 1px solid rgba(74, 85, 104, 0.2);
+                    border-radius: 4px;
+                    white-space: nowrap;
+                }
+                #slide-4 .s3-box {
+                    background: var(--bg-color);
+                    border: 2px solid #e28743; /* Distinct color for object storage */
+                    border-radius: 8px;
+                    padding: 0.8rem;
+                    width: 160px;
+                    text-align: center;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                    flex-shrink: 0;
+                    z-index: 3;
+                }
+                #slide-4 .s3-title {
+                    font-weight: 700;
+                    color: #e28743;
+                    margin-bottom: 0.2rem;
+                    font-size: 0.9rem;
+                }
+                #slide-4 .figure-caption {
+                    font-size: 0.85rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.4;
+                    margin-top: 1rem;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">Experimental Setup &amp; Geodistributed Testbed</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Infrastructure Nodes:</strong>
+                                <ul>
+                                    <li><strong>Core Server (Frankfurt - fra1):</strong> Deployed on a DigitalOcean VM (2 vCPUs, 4 GB RAM) running Ubuntu 24.04 LTS. Hosts the Registry:2 stateless engine, Harbor stateful control plane, and NGINX L7 Reverse Proxy.</li>
+                                    <li><strong>Edge Client (London - lon1):</strong> Deployed on an isolated DigitalOcean VM (1 vCPU, 2 GB RAM) dedicated to distributed load generation via Grafana k6.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Cloud Persistence:</strong> S3-compatible Object Storage (DigitalOcean Spaces) located in Frankfurt, integrated with the Harbor registry path.</li>
+                            <li><strong>Workload Profiles (Grafana k6):</strong>
+                                <ul>
+                                    <li><strong>Script A (Metadata-Heavy):</strong> High frequency, low payload GET Manifest queries to stress L7 governance and connection pools.</li>
+                                    <li><strong>Script B (Payload-Heavy):</strong> High-volume, concurrent multi-megabyte OCI image layer transfers to saturate transport and I/O paths.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Pure CSS Geographic Schematic -->
+                    <div class="right-col">
+                        <div class="schematic-wrapper">
+                            
+                            <!-- Server Nodes & WAN Link -->
+                            <div class="nodes-row">
+                                <div class="node-box">
+                                    <div class="node-title">London Edge (lon1)</div>
+                                    <div class="node-details">Client / k6 Load Generator<br>1 vCPU, 2GB RAM</div>
+                                </div>
+                                
+                                <div class="link-wrapper">
+                                    <div class="link-line"></div>
+                                    <div class="link-badge">WAN Link: RTT &approx; 16 ms</div>
+                                </div>
+                                
+                                <div class="node-box">
+                                    <div class="node-title">Frankfurt Core (fra1)</div>
+                                    <div class="node-details">Server / Proxy &amp; Registries<br>2 vCPUs, 4GB RAM</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Internal S3 Connection (Aligned right) -->
+                            <div class="s3-section">
+                                <div class="vertical-connection">
+                                    <div class="vertical-line"></div>
+                                    <div class="vertical-badge">Internal Datapath Offloading</div>
+                                </div>
+                                <div class="s3-box">
+                                    <div class="s3-title">S3 Storage (fra1)</div>
+                                    <div class="node-details">DigitalOcean Spaces<br>Blob Persistence</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="figure-caption">Fig. 3: Geodistributed experimental topology and physical node specifications.</div>
+                    </div>
+                </div>
+            </div>
+       
+        </div>
+
+        <!-- Slide 5: Control Plane vs. Data Plane: Schematic Comparison -->
+        <div class="slide" id="slide-5">
+            <style>
+                /* Scoped CSS specifically for Slide 5's Layout */
+                #slide-5 .left-col ul li { margin-bottom: 1.2rem; font-size: 1.05rem; line-height: 1.5; }
+                #slide-5 .left-col ul ul { margin-top: 0.4rem; margin-bottom: 0; list-style-type: circle; }
+                #slide-5 .left-col ul ul li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+                
+                #slide-5 .dual-image-container {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: space-between;
+                    background: var(--white);
+                    padding: 1.5rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                    margin-bottom: 1rem;
+                }
+                
+                #slide-5 .image-wrapper {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.8rem;
+                }
+                
+                #slide-5 .image-wrapper img {
+                    width: 100%;
+                    height: auto;
+                    border: 1px solid rgba(74, 85, 104, 0.2);
+                    border-radius: 6px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                }
+                
+                #slide-5 .inner-caption {
+                    font-size: 0.85rem;
+                    color: var(--primary-blue);
+                    font-weight: 600;
+                    text-align: center;
+                }
+                
+                #slide-5 .figure-caption {
+                    font-size: 0.95rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.4;
+                    margin-top: 0.5rem;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">Control Plane vs. Data Plane: Schematic Comparison</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Registry:2 Unified Network Path:</strong>
+                                <ul>
+                                    <li>Operates via <strong>Synchronous L7 Proxying</strong>. NGINX actively intercepts, terminates TLS, parses, and proxies <em>all</em> control traffic (manifests) and heavy data traffic (payload layers) directly to the local SSD persistence layer.</li>
+                                    <li>The reverse proxy and the registry engine share the critical path, making the host highly susceptible to local I/O queue starvation under concurrency.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Harbor Decoupled Datapath:</strong>
+                                <ul>
+                                    <li>Employs <strong>L7 Data Plane Offloading</strong>. The L7 Control Plane (Harbor Core) validates client credentials against PostgreSQL, then instantly offloads the heavy binary I/O stream to S3 Object Storage via <strong>HTTP 307 Temporary Redirects</strong>.</li>
+                                    <li>Bypasses the NGINX reverse proxy entirely during the binary streaming phase, protecting the host core from network bufferbloat.</li>
+                                </ul>
+                            </li>
+                            <li><strong>The "Sidecar Tax" Hypothesis:</strong> Stateful, multi-container synchronization (PostgreSQL, Redis, Core) is predicted to introduce a measurable latency and CPU coordination overhead (<em>T<sub>0</sub>(N)</em>) during metadata-heavy operations.</li>
+                        </ul>
+                    </div>
+
+  <!-- COLONNA DESTRA: Immagini Stacked Grandi e Senza Box (Bloccato al 40%) -->
+                    <div class="right-col" style="flex: 0 0 40% !important; max-width: 40% !important; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px;">
+                        
+                        <div class="dual-image-container" style="display: flex; flex-direction: column; gap: 15px; width: 100%; align-items: center; box-sizing: border-box;">
+                            
+                            <!-- SCHEMATICO REGISTRY:2 (UNIFIED PATH) - SENZA BOX -->
+                            <div class="image-wrapper" style="width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box;">
+                                <img src="figures/fig_arch_registry_stateless.png" 
+                                     alt="Registry:2 Unified Path Schematic" 
+                                     onerror="this.src='https://placehold.co/600x250/f8f9fa/4a5568?text=Registry:2\n(Unified+Path)'"
+                                     style="max-width: 100%; max-height: 19vh; width: auto; height: auto; object-fit: contain;">
+                                <div class="inner-caption" style="font-size: 0.85em; font-weight: 700; color: #111111; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Registry:2 (Unified Path)
+                                </div>
+                            </div>
+                            
+                            <!-- SCHEMATICO HARBOR (DECOUPLED PATH) - SENZA BOX -->
+                            <div class="image-wrapper" style="width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box;">
+                                <img src="figures/fig_arch_harbor_stateful.png" 
+                                     alt="Harbor Decoupled Path Schematic" 
+                                     onerror="this.src='https://placehold.co/600x250/f8f9fa/4a5568?text=Harbor\n(Decoupled+Path)'"
+                                     style="max-width: 100%; max-height: 19vh; width: auto; height: auto; object-fit: contain;">
+                                <div class="inner-caption" style="font-size: 0.85em; font-weight: 700; color: #111111; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Harbor (Decoupled Path via HTTP 307)
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Didascalia Generale Accademica -->
+                        <div class="figure-caption" style="font-size: 0.75em; color: #555; margin-top: 5px; font-style: italic; line-height: 1.3; text-align: center; max-width: 95%;">
+                            Fig. 4: Architectural comparison of the unified synchronous storage pathway vs. decoupled control/data plane offloading.
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+
+           
+        </div>
+
+        <!-- Slide 6: L7 Metadata Control Plane: Quantifying the 'Sidecar Tax' -->
+        <div class="slide" id="slide-6">
+            <style>
+                /* Scoped CSS specifically for Slide 6's Typography and Image layout - Compacted to fit */
+                #slide-6 .left-col ul li { margin-bottom: 0.8rem; font-size: 0.95rem; line-height: 1.4; }
+                #slide-6 .formula-box {
+                    font-family: monospace; 
+                    font-size: 1.1rem; 
+                    margin: 0.5rem 0; 
+                    padding: 0.75rem;
+                    background-color: var(--white);
+                    border: 1px solid rgba(74, 85, 104, 0.15);
+                    border-radius: 8px;
+                    color: var(--primary-blue); 
+                    text-align: center;
+                    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+                }
+                #slide-6 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 1rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-6 .image-wrapper img {
+                    width: 100%;
+                    max-height: 380px; /* Constrain image height */
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1; /* Thin light-gray border */
+                    border-radius: 6px;
+                    margin-bottom: 0.8rem;
+                }
+                #slide-6 .figure-caption {
+                    font-size: 0.85rem;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">L7 Metadata Control Plane: Quantifying the "Sidecar Tax"</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Formal Efficiency Model (Amdahl's Law):</strong><br>
+                                We formalize the middleware tax using the distributed systems efficiency model:
+                                <div class="formula-box">
+                                    E<sub>P</sub> = 1 / (1 + T<sub>0</sub>(N) / T<sub>1</sub>(N))
+                                </div>
+                                where <strong>T<sub>1</sub>(N)</strong> represents useful execution work, and <strong>T<sub>0</sub>(N)</strong> represents the non-parallelizable coordination and synchronization overhead.
+                            </li>
+                            <li><strong>Registry:2 Efficiency (T<sub>0</sub> &approx; 0):</strong><br>
+                                Achieves a median metadata latency of <strong>22.08 ms</strong>. Since the stateless engine avoids relational database and loopback overhead, the coordination tax is virtually non-existent, pushing efficiency near-ideal (E<sub>P</sub> &approx; 1) and operating close to the physical WAN RTT floor.
+                            </li>
+                            <li><strong>Harbor Stateful Penalty (The 'Sidecar Tax'):</strong><br>
+                                Median metadata latency jumps to <strong>80.56 ms</strong>. Serving the same L7 GET Manifest request requires an additional ~58 ms of compute time spent in PostgreSQL transaction validation, Redis session cache lookup, and OIDC authorization.
+                            </li>
+                            <li><strong>Tail Latency &amp; Outliers:</strong><br>
+                                High-concurrency metadata stress (500 VUs) triggers PostgreSQL Connection Pool Starvation, driving queuing delays exponentially up to the 30s SLA limit.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Boxplot Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/sidecar_tax_aggregated.png" 
+                                 alt="Empirical latency distribution under 500 VUs metadata stress"
+                                 onerror="this.src='https://placehold.co/600x450/f8f9fa/4a5568?text=sidecar_tax_aggregated.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 5: Empirical latency distribution under 500 VUs metadata stress (logarithmic scale), isolating the static and dynamic L7 coordination tax of Harbor.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+  <!-- Slide 7: Control Plane Saturation & Right-Censoring Mitigation -->
+<div class="slide" id="slide-7">
+    <style>
+        /* Scoped CSS for Slide 7: Uniformed with Slide 6 styling */
+        #slide-7 {
+            padding: 2.5rem 4rem; /* Match Slide 6 padding */
+        }
+        #slide-7 .content-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #slide-7 h2.slide-title {
+            font-size: 1.8rem; /* Match Slide 6 title size */
+            color: var(--primary-blue); /* Uniform Blue */
+            border-bottom: 2px solid var(--primary-blue); /* Match Slide 6 border */
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        #slide-7 .split-layout {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+        }
+        #slide-7 .left-col {
+            flex: 0 0 55%; /* Preservation of the 55% width for more text space */
+            max-width: 55%;
+            box-sizing: border-box;
+            padding-right: 30px;
+        }
+        #slide-7 .right-col {
+            flex: 0 0 40%; 
+            max-width: 40%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #slide-7 .left-col ul {
+            list-style-type: square;
+            padding-left: 1.5rem;
+        }
+        #slide-7 .left-col ul li {
+            margin-bottom: 0.8rem; /* Match Slide 6 list spacing */
+            font-size: 0.95rem; /* Match Slide 6 font size */
+            line-height: 1.4; /* Match Slide 6 line height */
+            color: var(--text-main);
+        }
+        #slide-7 .left-col ul li strong {
+            color: var(--primary-blue); /* Uniform Blue for bold highlights */
+        }
+        #slide-7 .image-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Match Slide 6 shadow */
+            border: 1px solid rgba(74, 85, 104, 0.1); /* Match Slide 6 border */
+        }
+        #slide-7 .image-wrapper img {
+            width: 100%;
+            max-height: 380px; /* Match Slide 6 image constraint */
+            object-fit: contain;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+        }
+        #slide-7 .figure-caption {
+            font-size: 0.85rem;
+            color: var(--slate-gray);
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+        }
+    </style>
+
+    <div class="content-container">
+        <h2 class="slide-title">Control Plane Saturation &amp; Right-Censoring Mitigation</h2>
+        <div class="split-layout">
+            
+            <!-- Left Column: Academic Bullet Points -->
+             <!-- COLONNA SINISTRA: Testo Accademico (Sintetizzato e bloccato al 55%) -->
+            <div class="left-col" style="flex: 0 0 55%; max-width: 55%; box-sizing: border-box; padding-right: 25px;">
+                <ul style="font-size: 1.1em; line-height: 1.5; color: #333; margin: 0; padding-left: 20px;">
+                    <li style="margin-bottom: 12px;">
+                        <strong>PostgreSQL Connection Starvation:</strong><br>
+                        Sustained peak metadata concurrency (500 VUs) saturates Harbor's multi-container control plane, quickly depleting the database connection pool and driving queuing delays (<strong>T<sub>q</sub></strong>) exponentially.
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <strong>Systematic SLA Breaches:</strong><br>
+                        Cumulative queue delay rapidly exceeds the 30-second application threshold, forcing the k6 load generator to drop active TCP connections and record HTTP gateway timeouts.
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <strong>Right-Censoring Mitigation:</strong><br>
+                        To prevent optimistic bias (where 30s timeouts artificially compress mean latencies), uncompleted samples are mathematically isolated, preserving the true asymptotic scale of the control-plane collapse.
+                    </li>
+                    <li style="margin-bottom: 0;">
+                        <strong>Self-Induced Thrashing Cycle:</strong><br>
+                        Sudden queue truncation from timeouts temporarily relieves database pressure (dropping CPU and throughput), only to re-saturate upon client reconnection in a destructive, cyclical collapse.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right Column: Time-Series Visual -->
+            <div class="right-col">
+                <div class="image-wrapper">
+                    <img src="figures/breaking_point_metadata.png" 
+                         alt="Metadata breaking point latency evolution"
+                         onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=breaking_point_metadata.png\\n(Local+Placeholder)'">
+                    <div class="figure-caption">Fig. 6: Metadata breaking point: Latency evolution under 500 VUs, illustrating the transition from linear scaling to exponential database queue collapse.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        <!-- Slide 8: L7 Data Plane: Throughput Scalability (1 - 100 VUs) -->
+        <div class="slide split-layout" id="slide-8">
+            <style>
+                /* Scoped CSS for Slide 8: Strict Spatial Discipline */
+                #slide-8 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-8 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-8 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 1rem;
+                    padding-bottom: 0.3rem;
+                }
+                #slide-8 .left-col ul li {
+                    margin-bottom: 0.6rem; /* Small margin to save space */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-8 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-8 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.8rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-8 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.6rem;
+                }
+                #slide-8 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-8 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-8 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">L7 Data Plane: Throughput Scalability (1 - 100 VUs)</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Linear Scaling Zone (&le; 40 VUs):</strong><br>
+                                Both Registry:2 and Harbor scale identically and linearly, climbing up to ~150 MiB/s. This empirical overlap demonstrates the complete success of Harbor's <strong>Datapath Decoupling</strong> strategy: under moderate load, the stateful control plane does not penalize binary payload operations.
+                            </li>
+                            <li><strong>Physical Saturation Plateau (&gt; 40 VUs):</strong><br>
+                                Beyond 40 VUs, the throughput curves flatten, converging and fluctuating within a narrow band of <strong>200–240 MiB/s</strong>. The expansion of variance bands (shaded regions) flags the onset of physical WAN congestion, transport packet loss, and buffer jitter.
+                            </li>
+                            <li><strong>Capped Scale (100 VUs Limit) - A Methodological Choice:</strong><br>
+                                Extending the concurrency axis up to 500 VUs on this plot would be scientifically redundant. Because the geodistributed WAN link is physically saturated, higher client pressure would only yield a degraded, flat plateau with TCP window throttling, offering no new architectural insights.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Scalability Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/throughput_scalability.png" 
+                                 alt="L7 aggregate heavy payload throughput scaling"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=throughput_scalability.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 7: L7 aggregate heavy payload throughput scaling. Beyond 40 VUs, both registry pipelines converge to the physical saturation plateau of the network link.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+      
+        </div>
+
+        <!-- Slide 9: Payload Breaking Point: BASE Offloading vs. ACID Data Gravity -->
+        <div class="slide split-layout" id="slide-9">
+            <style>
+                /* Scoped CSS for Slide 9: Strict Spatial Discipline */
+                #slide-9 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-9 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-9 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 1rem;
+                    padding-bottom: 0.3rem;
+                }
+                #slide-9 .left-col ul li {
+                    margin-bottom: 0.6rem; /* Small margin to save space */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-9 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-9 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.8rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-9 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.6rem;
+                }
+                #slide-9 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-9 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-9 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">Payload Breaking Point: BASE Offloading vs. ACID Data Gravity</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>The Local SSD Bottleneck (ACID Data Gravity):</strong><br>
+                                Under a maximum concurrency of 500 VUs, Registry:2 (writing directly to local SSD) suffers from severe write-queue starvation on the host's storage controller. The POSIX-compliant synchronous ACID path creates an I/O bottleneck, driving average write latencies up to <strong>10 seconds</strong> and triggering systematic 30-second timeouts.
+                            </li>
+                            <li><strong>Harbor S3 Offloading Stability (BASE Paradigm):</strong><br>
+                                Harbor utilizes L7 Data Plane Offloading via HTTP 307 Redirects. Once the client is authenticated, Harbor completely delegates the binary data stream directly to DigitalOcean Spaces (S3 Object Storage).
+                            </li>
+                            <li><strong>Stabilized Response Times:</strong><br>
+                                By bypassing the host proxy and disk bottlenecks entirely, Harbor's payload write latencies stabilize on a flat, compact plateau between <strong>4 and 6 seconds</strong>, with zero cascading queue failures or systematic SLA timeouts.
+                            </li>
+                            <li><strong>Architectural Outcome:</strong><br>
+                                Highly parallel, eventually consistent distributed storage (BASE) successfully bypasses core host I/O constraints, demonstrating superior scalability for data planes in the geodistributed Cloud Continuum.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Time-Series Breaking Point Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/breaking_point_payload.png" 
+                                 alt="Heavy payload breaking point evolution"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=breaking_point_payload.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 8: Heavy payload breaking point: Latency evolution under 500 VUs. S3 offloading (BASE) prevents the local host write-queue starvation suffered by Registry:2 (ACID).</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+       
+        </div>
+
+        <!-- Slide 10: L4 Transport Layer Limits: Cumulative BDP Analysis -->
+        <div class="slide split-layout" id="slide-10">
+            <style>
+                /* Scoped CSS for Slide 10: Strict Spatial Discipline */
+                #slide-10 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-10 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-10 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.8rem;
+                    padding-bottom: 0.2rem;
+                }
+                #slide-10 .left-col ul li {
+                    margin-bottom: 0.5rem; /* Very small margin between points */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-10 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-10 .math-formula {
+                    font-family: 'Times New Roman', Times, serif;
+                    font-style: italic;
+                    font-size: 1.1rem;
+                    margin: 4px 0 8px 0; /* Extremely tight margins for math blocks */
+                    color: var(--primary-blue);
+                    text-align: center;
+                    background: rgba(0, 47, 108, 0.02);
+                    padding: 4px;
+                    border-radius: 4px;
+                    border: 1px solid rgba(0, 47, 108, 0.1);
+                }
+                #slide-10 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.6rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-10 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.5rem;
+                }
+                #slide-10 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-10 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-10 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">L4 Transport Layer Limits: Cumulative BDP Analysis</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points & Formulas -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>The Bandwidth-Delay Product (BDP) Model:</strong><br>
+                                The fundamental data capacity of a network pipe is governed by transport physics:
+                                <div class="math-formula">BDP = Capacity &times; RTT</div>
+                            </li>
+                            <li><strong>Single-Socket Throughput Boundary:</strong><br>
+                                For any individual unconstrained TCP connection, the maximum achievable throughput is bounded by the receive window size (<strong>W<sub>max</sub></strong>) and the Round-Trip Time (RTT):
+                                <div class="math-formula">Throughput<sub>max</sub> &le; W<sub>max</sub> / RTT</div>
+                            </li>
+                            <li><strong>Constrained Buffer Regime:</strong><br>
+                                By forcing the kernel TCP window to a fixed <strong>W<sub>max</sub> = 64 KB</strong> over our geodistributed WAN link (<strong>RTT &approx; 16 ms</strong>), the single-socket ceiling is strictly capped at:
+                                <div class="math-formula">Throughput<sub>max</sub> &le; 64 KB / 16 ms &approx; 4.09 MB/s</div>
+                            </li>
+                            <li><strong>Empirical Validation of L4 Domination:</strong><br>
+                                Under high-concurrency multi-socket stress (k6), cumulative data transfer (red curve) perfectly matches the predicted theoretical aggregate slope of <strong>~54.0 MB/s</strong> (dashed black line) due to <strong>sender stalling</strong>, proving network physics override application efficiency under buffer constraints.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: BDP Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/bdp_cumulative.png" 
+                                 alt="Cumulative data transfer under BDP constraints"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=bdp_cumulative.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 9: Cumulative data transfer comparison. Under constrained TCP windows, the empirical transfer slope perfectly overlaps with the 54.0 MB/s theoretical BDP limit.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+  
+        </div>
+
+        <!-- Slide 11: L4 Throughput Dynamics & TCP ACK Bundling -->
+        <div class="slide split-layout" id="slide-11">
+            <style>
+                /* Scoped CSS for Slide 11: Strict Spatial Discipline */
+                #slide-11 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-11 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-11 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.8rem;
+                    padding-bottom: 0.2rem;
+                }
+                #slide-11 .left-col ul li {
+                    margin-bottom: 0.4rem; /* Tight margins around 6px */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-11 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-11 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.6rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-11 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.5rem;
+                }
+                #slide-11 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-11 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-11 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">L4 Throughput Dynamics &amp; TCP ACK Bundling</h2>
+                <div class="split-layout">
+                    
+ <!-- COLONNA SINISTRA: Testo Accademico (Sintetizzato e bloccato al 55%) -->
+                    <div class="left-col" style="flex: 0 0 55%; max-width: 55%; box-sizing: border-box; padding-right: 20px;">
+                        <ul style="font-size: 1.1em; line-height: 1.5; color: #333; margin: 0; padding-left: 20px;">
+                            <li style="margin-bottom: 12px;">
+                                <strong>Dynamic Time-Series Dynamics:</strong><br>
+                                Sustained average bounded to <strong>~54.0 MB/s</strong> vs. highly volatile, oscillating instantaneous throughput.
+                            </li>
+                            <li style="margin-bottom: 12px;">
+                                <strong>Transient Spikes (~100 MiB/s):</strong><br>
+                                Extreme temporary throughput bursts driven by WAN jitter, intermediate queueing delays, and multi-socket concurrency.
+                            </li>
+                            <li style="margin-bottom: 12px;">
+                                <strong>TCP ACK Compression & Bundling:</strong><br>
+                                WAN latency forces ACKs to accumulate in intermediate buffers, hitting the sender in rapid-fire clusters and releasing stalled windows.
+                            </li>
+                            <li style="margin-bottom: 0;">
+                                <strong>Coordinated Sender Stalling:</strong><br>
+                                Immediate post-burst depletion of the constrained <strong>64 KB</strong> window triggers synchronized socket stalls awaiting the next ACK cluster.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Time-Series Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/bdp_time_series.png" 
+                                 alt="Instantaneous L4 throughput dynamics time series plot"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=bdp_time_series.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 10: Instantaneous L4 throughput dynamics. The volatile oscillations in the constrained regime validate the dynamic transition between ACK bundling bursts and sender stalling.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Slide 12: CAP Theorem Validation via Latency ECDFs -->
+        <div class="slide split-layout" id="slide-12">
+            <style>
+                /* Scoped CSS for Slide 12: Strict Spatial Discipline */
+                #slide-12 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-12 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-12 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.8rem;
+                    padding-bottom: 0.2rem;
+                }
+                #slide-12 .left-col ul li {
+                    margin-bottom: 0.4rem; /* Tight margins around 6px */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-12 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-12 .math-formula {
+                    font-family: 'Times New Roman', Times, serif;
+                    font-style: italic;
+                    font-size: 1.1rem;
+                    margin: 4px 0 8px 0; /* Extremely tight margins for math blocks */
+                    color: var(--primary-blue);
+                    text-align: center;
+                    background: rgba(0, 47, 108, 0.02);
+                    padding: 4px;
+                    border-radius: 4px;
+                    border: 1px solid rgba(0, 47, 108, 0.1);
+                }
+                #slide-12 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.6rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-12 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.5rem;
+                }
+                #slide-12 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-12 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-12 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">CAP Theorem Validation via Latency ECDFs</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points & Formulas -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Sigmoidal Cumulative Distribution (ECDF):</strong><br>
+                                The empirical latency profiles exhibit a mathematically canonical sigmoidal (&int;) geometry. This exceptionally steep near-vertical transition indicates a near-zero variance, validating highly deterministic performance with negligible network jitter under stationary cloud continuum conditions.
+                            </li>
+                            <li><strong>The Consistency Penalty (&Delta;T):</strong><br>
+                                A rigid, parallel horizontal displacement is observed between the two distributions:
+                                <ul>
+                                    <li><strong>Eventual Consistency (AP / BASE):</strong> Median latency of <strong>72 ms</strong> (optimized local core write at Frankfurt).</li>
+                                    <li><strong>Strong Consistency (CP / ACID):</strong> Median latency of <strong>88 ms</strong> (synchronous blocking core + edge write at London).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Empirical Proof of Brewer's CAP Theorem:</strong><br>
+                                The measured delta is exactly:
+                                <div class="math-formula">&Delta;T = T<sub>CP</sub> - T<sub>AP</sub> = 16 ms</div>
+                                which correlates precisely with the physical WAN Round-Trip Time (RTT) between London and Frankfurt, demonstrating that synchronous consensus geographic blocks impose a non-negotiable physical transport penalty.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: ECDF Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/cap_theorem_ecdf.png" 
+                                 alt="Latency ECDF of CP vs. AP consistency models"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=cap_theorem_ecdf.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 11: Latency ECDF of CP vs. AP consistency models. The deterministic 16 ms horizontal shift provides empirical proof of the CAP theorem at Layer 7.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+ 
+        </div>
+
+        <!-- Slide 13: Storage Backend Trade-offs & The Throughput Paradox -->
+        <div class="slide split-layout" id="slide-13">
+            <style>
+                /* Scoped CSS for Slide 13: Strict Spatial Discipline */
+                #slide-13 {
+                    padding: 2.5rem 4rem; /* Tight vertical padding */
+                }
+                #slide-13 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-13 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.8rem;
+                    padding-bottom: 0.2rem;
+                }
+                #slide-13 .left-col ul li {
+                    margin-bottom: 0.4rem; /* Tight margins around 6px */
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-13 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-13 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.6rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-13 .image-wrapper img {
+                    max-height: 42vh; /* Strict height constraint */
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.5rem;
+                }
+                #slide-13 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+                #slide-13 .speaker-notes {
+                    bottom: 15px; /* Pull notes slightly lower */
+                }
+                #slide-13 .speaker-notes .notes-content {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">Storage Backend Trade-offs &amp; The Throughput Paradox</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>The Throughput Paradox:</strong><br>
+                                Under an intense concurrent workload of 500 VUs, S3-based cloud object storage (Spaces) running on the BASE paradigm achieves a <strong>42% reduction</strong> in client-perceived average latency (<strong>101.15 ms</strong>) compared to the highly optimized, local SSD transactional ACID path (<strong>176.80 ms</strong>).
+                            </li>
+                            <li><strong>The Physical Root (Eliminating Queue Starvation):</strong><br>
+                                This paradox is driven by L7 offloading. Writing directly to local SSD forces all traffic synchronously through the core host and NGINX proxy, saturating the block controller and inducing severe kernel queuing delays (<strong>T<sub>q</sub></strong>). Conversely, Harbor's HTTP 307 Redirect bypasses NGINX entirely, delegating concurrent bulk streaming directly to the highly parallel S3 distributed backend.
+                            </li>
+                            <li><strong>Converged Transport-Layer Throughput:</strong><br>
+                                Despite S3's latency advantage, both storage backends converge to an identical aggregate throughput plateau of <strong>&approx;36.80 MB/s</strong>.
+                            </li>
+                            <li><strong>The Ultimate Leveler:</strong><br>
+                                Once local host storage bottlenecks are bypassed, geodistributed data transfer remains strictly bounded by Layer 4 transport physics (WAN RTT and Bandwidth-Delay Product constraints).
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Storage Paradox Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <!-- Using Placehold.co fallback in case the local file isn't found in this preview context -->
+                            <img src="figures/storage_tradeoff.png" 
+                                 alt="Storage performance trade-off under peak concurrency"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=storage_tradeoff.png\\n(Local+Placeholder)'">
+                            <div class="figure-caption">Fig. 12: Storage performance trade-off under peak concurrency (500 VUs), highlighting the convergence of aggregate throughput under geodistributed WAN limits.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+<!-- Slide 14: System Resource Footprint & Scaling Profiles -->
+<div class="slide split-layout" id="slide-14">
+    <style>
+        /* Scoped CSS for Slide 14: Spatial rebalancing and black typography */
+        #slide-14 {
+            padding: 3rem 4rem;
+        }
+
+        #slide-14 .content-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #slide-14 h2.slide-title {
+            font-size: 2.2rem;
+            color: #000000; /* Updated to black */
+            border-bottom: 3px solid #000000; /* Updated to black */
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+        }
+
+        #slide-14 .split-layout {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        #slide-14 .left-col {
+            flex: 0 0 55%; /* Rebalanced to 55% width */
+            max-width: 55%;
+            box-sizing: border-box;
+            padding-right: 30px; /* Increased breathing room */
+        }
+
+        #slide-14 .right-col {
+            flex: 0 0 40%; /* Rebalanced to 40% width */
+            max-width: 40%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #slide-14 .left-col ul {
+            list-style-type: square;
+            padding-left: 1.5rem;
+        }
+
+        #slide-14 .left-col ul li {
+            margin-bottom: 1.2rem; /* Increased spacing */
+            font-size: 1.05rem;
+            line-height: 1.6; /* Increased line-height for readability */
+            color: #111111; /* Updated to black/dark charcoal */
+        }
+
+        #slide-14 .left-col ul li strong {
+            color: #000000; /* Bold highlights updated to black */
+        }
+
+        #slide-14 .left-col ul ul {
+            margin-top: 0.5rem;
+            list-style-type: circle;
+        }
+
+        #slide-14 .left-col ul ul li {
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        #slide-14 .image-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        #slide-14 .image-wrapper img {
+            max-width: 100%;
+            max-height: 38vh; /* Strict constraint to prevent crowding */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 0.8rem;
+        }
+
+        #slide-14 .figure-caption {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+            padding: 0 0.5rem;
+        }
+    </style>
+
+    <div class="content-container">
+        <h2 class="slide-title">System Resource Footprint &amp; Scaling Profiles</h2>
+        <div class="split-layout">
+            
+            <!-- Left Column: Academic Content (55% Width) -->
+            <div class="left-col">
+                <ul>
+                    <li><strong>The Static Resource Tax (m_i):</strong><br>
+                        Harbor's modular architecture imposes a high static tax, requiring a baseline of <strong>604 MB</strong> of RAM at idle to maintain namespaces, cgroups, and loopback networks for 10+ internal containers.
+                    </li>
+                    <li><strong>VM Host vs. Container Isolation:</strong><br>
+                        To resolve telemetric discrepancies, we distinguish the total VM host footprint (~1.5 GB under peak load, including OS kernel, NGINX proxy, and monitoring agents) from the strictly isolated middleware stack peaking at <strong>1085 MB</strong> (Harbor) vs. <strong>843 MB</strong> (Registry:2).
+                    </li>
+                    <li><strong>Sustained Compute Scaling Profiles (500 VUs):</strong>
+                        <ul>
+                            <li><strong>Harbor (Compute-Bound / Self-Induced Thrashing):</strong> Average CPU is low (<strong>31.9%</strong>) due to S3 data-plane offloading. However, peak stress drives CPU to 100% due to intense kernel scheduler thread contention and PostgreSQL connection starvation.</li>
+                            <li><strong>Registry:2 (I/O-Bound / Steady State):</strong> Locks the host CPU at a sustained <strong>86.1%</strong> (peaking at 100%) in a highly productive steady state, actively proxying and processing every network and disk block transaction.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right Column: Visual Component (40% Width) -->
+            <div class="right-col">
+                <div class="image-wrapper">
+                    <img src="figures/system_resource_footprint_v2.png" 
+                         alt="Comparative resource footprint (RAM and CPU) under peak concurrency"
+                         onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=system_resource_footprint_v2.png\\n(Local+Placeholder)'">
+                    <div class="figure-caption">Fig. 13: Comparative resource footprint (RAM and CPU) under peak concurrency (500 VUs), contrasting stateless efficiency against stateful modular tax.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <!-- Slide 15: Appendix: Full-Stack Temporal CPU Characterization -->
+        <div class="slide split-layout" id="slide-15">
+            <style>
+                /* Scoped CSS for Slide 15: Grand Finale Layout */
+                #slide-15 {
+                    padding: 2.5rem 4rem;
+                }
+                #slide-15 .content-container {
+                    height: 90%;
+                    justify-content: center;
+                }
+                #slide-15 h2.slide-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.8rem;
+                }
+                #slide-15 .left-col ul li {
+                    margin-bottom: 0.4rem;
+                    font-size: 0.9rem;
+                    line-height: 1.35;
+                }
+                #slide-15 .left-col ul li strong {
+                    color: var(--primary-blue);
+                }
+                #slide-15 .image-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: var(--white);
+                    padding: 0.6rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                    border: 1px solid rgba(74, 85, 104, 0.1);
+                }
+                #slide-15 .image-wrapper img {
+                    max-height: 42vh;
+                    width: auto;
+                    object-fit: contain;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 6px;
+                    margin-bottom: 0.5rem;
+                }
+                #slide-15 .figure-caption {
+                    font-size: 0.8rem;
+                    color: var(--slate-gray);
+                    font-style: italic;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 0.5rem;
+                }
+            </style>
+
+            <div class="content-container">
+                <h2 class="slide-title">Appendix: Full-Stack Temporal CPU Characterization</h2>
+                <div class="split-layout">
+                    
+                    <!-- Left Column: Academic Bullet Points -->
+  <!-- COLONNA SINISTRA: Testo Accademico (Sintetizzato e bloccato al 55%) -->
+                    <div class="left-col" style="flex: 0 0 55%; max-width: 55%; box-sizing: border-box; padding-right: 20px;">
+                        <ul style="font-size: 1.05em; line-height: 1.45; color: #333; margin: 0; padding-left: 20px;">
+                            <li style="margin-bottom: 10px;">
+                                <strong>Temporal Telemetry (~2800s):</strong><br>
+                                Continuous 50-minute monitoring of 6 alternating payload stress-test cycles, contrasting NGINX proxy, Registry:2 (stateless), and Harbor (stateful) CPU profiles.
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <strong>Multi-Core Compute Scaling:</strong><br>
+                                Host Y-axis scales to 160%, capturing parallel multi-threaded execution across 2 vCPUs on the Frankfurt Core server.
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <strong>Datapath Decoupling Proof:</strong><br>
+                                NGINX CPU drops to <strong>near 0%</strong> during Harbor peaks. Post-authentication, the binary payload is routed to S3 via HTTP 307 Redirect, completely bypassing the local proxy.
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <strong>Unified Path Overhead:</strong><br>
+                                NGINX CPU spikes to <strong>30%-50%</strong> in perfect sync with Registry:2, driven by synchronous L7 proxying, buffer parsing, and context-switching.
+                            </li>
+                            <li style="margin-bottom: 0;">
+                                <strong>Architectural Insulation:</strong><br>
+                                Stateful control planes, despite their baseline tax, successfully insulate front-end proxies from L7 bufferbloat and CPU starvation under heavy geodistributed load.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Column: Visual -->
+                    <div class="right-col">
+                        <div class="image-wrapper">
+                            <img src="figures/cpu_full_stack.png" 
+                                 alt="Full-stack CPU utilization time-series"
+                                 onerror="this.src='https://placehold.co/600x400/f8f9fa/4a5568?text=cpu_full_stack.png'">
+                            <div class="figure-caption">Fig. 14: Full-stack CPU utilization time-series over alternating heavy workloads, providing empirical proof of L7 datapath offloading.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+      
+        </div>
+    <!-- Slide Navigation Counter -->
+    <div id="slide-counter">Slide 1 of 2</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const counter = document.getElementById('slide-counter');
+            let currentSlide = 0;
+
+            // Function to update the visible slide
+            function updateSlide(index) {
+                // Remove active class from all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // Add active class to current slide
+                slides[index].classList.add('active');
+                
+                // Update Counter
+                counter.innerText = `Slide ${index + 1} of ${slides.length}`;
+            }
+
+            // Keyboard navigation logic
+            document.addEventListener('keydown', (e) => {
+                // Next Slide mapping: Right Arrow, Down Arrow, PageDown, Space
+                if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) {
+                    e.preventDefault();
+                    if (currentSlide < slides.length - 1) {
+                        currentSlide++;
+                        updateSlide(currentSlide);
+                    }
+                }
+                
+                // Previous Slide mapping: Left Arrow, Up Arrow, PageUp
+                if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+                    e.preventDefault();
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                        updateSlide(currentSlide);
+                    }
+                }
+            });
+
+            // Initialize first view
+            updateSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
