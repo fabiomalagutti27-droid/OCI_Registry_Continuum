@@ -1,11 +1,24 @@
 
 # OCI Image Registry Continuum: Performance Characterization & Resource Overhead
 
+[![Docker](https://img.shields.io/badge/container-OCI%20Registry-blue.svg?logo=docker)](https://www.docker.com/)
+[![Harbor](https://img.shields.io/badge/registry-Harbor-60B5CC.svg)](https://goharbor.io/)
+[![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC.svg?logo=terraform)](https://www.terraform.io/)
+[![k6](https://img.shields.io/badge/benchmark-k6-7D64FF.svg?logo=k6)](https://k6.io/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![UniBo](https://img.shields.io/badge/UniBo-Cloud%20Computing-red.svg)](https://www.unibo.it)
+
 **Course:** Infrastructures for Cloud Computing and Big Data M  
+**Degree:** Master's Degree in Computer Engineering (*Corso di Laurea Magistrale in Ingegneria Informatica*)  
+**Institution:** Alma Mater Studiorum – Università di Bologna (DISI)  
 **Academic Year:** 2025/2026  
 **Instructors:** Prof. Antonio Corradi, Prof. Andrea Sabbioni  
-**Author:** Fabio Malagutti, Student ID: 0001247400  
-**Master's Degree:** Computer Engineering, University of Bologna (DISI)
+**Author:** Fabio Malagutti (Student ID: 0001247400)  
+
+---
+
+> 📄 **Full Technical Report:** Detailed experimental design, mathematical models, TCP buffer derivations, and complete benchmark analyses are published in [**`OCI_Registry_Continuum_Report.pdf`**](OCI_Registry_Continuum_Report.pdf).
 
 ---
 
